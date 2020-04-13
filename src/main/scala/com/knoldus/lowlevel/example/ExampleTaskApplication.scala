@@ -5,7 +5,7 @@ import org.apache.samza.application.TaskApplication
 import org.apache.samza.application.descriptors.TaskApplicationDescriptor
 import org.apache.samza.serializers.{KVSerde, StringSerde}
 import org.apache.samza.system.kafka.descriptors.{KafkaInputDescriptor, KafkaSystemDescriptor}
-import org.apache.samza.task.StreamTaskFactory
+import org.apache.samza.task.{StreamTask, StreamTaskFactory}
 
 class ExampleTaskApplication extends TaskApplication{
   override def describe(appDescriptor: TaskApplicationDescriptor): Unit = {
@@ -33,6 +33,8 @@ class ExampleTaskApplication extends TaskApplication{
     appDescriptor.withInputStream(inputDesc2)
     appDescriptor.withOutputStream(outputDesc)
 
-    appDescriptor.withTaskFactory(new ExampleTask)
+    appDescriptor.withTaskFactory(new StreamTaskFactory {
+      override def createInstance(): StreamTask = new ExampleTask
+    })
   }
 }
